@@ -38,6 +38,7 @@ function LoanReport() {
   });
 
   const [paymentDetails, setPaymentDetails] = useState([]);
+  const [error, setError] = useState("");
   const { register, reset } = useForm({
     defaultValues: loanDetails,
   });
@@ -47,22 +48,23 @@ function LoanReport() {
   // fetching the details from service and setting the state variables
   useEffect(() => {
     console.log("+++++++ Use Effect in Loan Details Called ++++++");
+    setError(null);
     if (!accountNumber) {
-      navigate("/");
+      setError("Account number not provided.");
+      setTimeout(() => navigate("/"), 2000);
     } else {
       console.log(accountNumber);
       const loanService = new LoanService(FetchClient);
       (async () => {
         try {
-          const resp = await loanService.getLoanDetails(accountNumber);
-          console.log(resp);
-          const respData = resp;
+          const respData = await loanService.getLoanDetails(accountNumber);
+          if (!respData) {
+            setError("Account number not found.");
+            setTimeout(() => navigate("/"), 2000);
+            return;
+          }
           console.log("resrpData::", respData);
           const { customer, vehicle, payments } = respData;
-          console.log("Customer Details:::", customer);
-          console.log("Vehicle Details:::", vehicle);
-          console.log("Payment Details::::", payments);
-          console.log("present Loan Details:::", loanDetails);
           setLoanDetails({
             ...loanDetails,
             ...respData,
@@ -75,7 +77,9 @@ function LoanReport() {
           // setLoanDetails(resp.data);
           reset({ ...loanDetails, ...respData, ...customer, ...vehicle });
         } catch (error) {
-          throw error;
+          setError("An error occurred while fetching the loan details.");
+          setLoanDetails(null);
+          setTimeout(() => navigate("/"), 3000);
         }
       })();
     }
@@ -119,29 +123,91 @@ function LoanReport() {
   // generating pdf
   const generatePDF = () => {
     const input = document.getElementById("loan-report");
+    input.style.boxShadow = "none";
+    input.style.padding = "0";
+    input.style.margin = "0";
     console.log(input);
-    html2canvas(input).then((canvas) => {
+    html2canvas(input, {
+      scale: 1.5, // Increase scale for better quality
+      useCORS: true, // Enable CORS to handle external images
+      logging: true, // Enable logging for debugging
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: input.scrollWidth,
+      windowHeight: input.scrollHeight,
+    }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-      const imgProps = pdf.getImageProperties(imgData);
+      // const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      // const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width; // for potrate
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      // pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+      const imgProps = pdf.getImageProperties(imgData);
+      const contentWidth = pdfWidth - 20; // 10mm margins on each side
+      const contentHeight = (imgProps.height * contentWidth) / imgProps.width;
+
+      let heightLeft = canvas.height;
+      let position = 0;
+
+      // Add the image to the PDF in chunks if it exceeds one page
+      while (heightLeft > 0) {
+        pdf.addImage(
+          imgData,
+          "PNG",
+          10,
+          position + 10,
+          contentWidth,
+          contentHeight
+        );
+        heightLeft -= pdf.internal.pageSize.getHeight();
+        position -= pdf.internal.pageSize.getHeight();
+
+        // Add a new page if there's content remaining
+        if (heightLeft > 0) {
+          pdf.addPage();
+        }
+      }
+      // Restore the original styles after generating the PDF
+      input.style.boxShadow = "";
+      input.style.padding = "";
+      input.style.margin = "";
       pdf.save(`Loan_Report_${loanDetails.accountNumber}.pdf`);
     });
   };
+
+  // navigate to the Payment Collection Page
+  const collectPayment = () => {
+    navigate("/paymentCollection", { state: { accountNumber: accountNumber , customerName: loanDetails.name} });
+  };
+
   return (
     <div id="loan-report" className="w-full p-4">
+      {error && (
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
+          <p>{error}</p>
+        </div>
+      )}
       <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-3xl font-semibold mb-4">
             Loan Details for Account Number: {accountNumber}
           </h2>
+          <div>
+            <button
+              onClick={collectPayment}
+              className="bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-md mr-2 hover:bg-cyan-600"
+            >
+              Collect Payment
+            </button>
             <button
               onClick={generatePDF}
-              className="bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-cyan-600">
+              className="bg-cyan-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-cyan-600"
+            >
               Save as PDF
             </button>
+          </div>
         </div>
         <hr className="mb-6" />
         <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -324,7 +390,11 @@ function LoanReport() {
       </div>
 
       <div className="w-full bg-white shadow-lg rounded-lg pb-6 overflow-x-hidden">
-        <TableComp tableHeading="Payment Details" ColumnHeader={tableHeading} tableData={paymentDetails} />
+        <TableComp
+          tableHeading="Payment Details"
+          ColumnHeader={tableHeading}
+          tableData={paymentDetails}
+        />
       </div>
     </div>
   );

@@ -91,7 +91,7 @@ function AllLoansPage() {
 
     // go to the loan report page for more details
     const goLoanDetailsPage = () => {
-
+        navigate(`/loanDetails/${selectedLoanDetails.accountNumber}`)
       };
   return (
     <div id="loan-report" className="w-full p-4">

@@ -1,21 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { InputText, Select, Button } from "../componentLib";
+import { useLocation } from "react-router-dom";
 
-function PaymentCollection({ accountNumber, customerName }) {
+function PaymentCollection() {
     const currentDate = new Date().toISOString().split('T')[0];
+    const location = useLocation();
+    const { accountNumber, customerName } = location.state || {};
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      accountNumber: accountNumber,
+      accountNumber: "",
       paymentMode: "",
       amountPaid: "",
       paymentDate: currentDate,
     },
   });
+  useEffect(()=>{
+    if (accountNumber) {
+      setValue("accountNumber",accountNumber);
+    }
+  },[accountNumber,setValue]);
+  
   const onSubmit = (data) => console.log(data);
   console.log(errors);
   return (

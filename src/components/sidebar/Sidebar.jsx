@@ -17,6 +17,7 @@ function Sidebar() {
     { name: "Apply Loans", path: "/applyLoan", icon: <FaHandHoldingUsd />},
     { name: "All Customers", path: "/allLoans", icon: <MdOutlinePeopleAlt />,},
     { name: "EMI Calculate", path: "/emiCalculator", icon: <MdOutlinePedalBike />,},
+    { name: "Collect Payments", path: "/paymentCollection", icon:<FaHandHoldingUsd/>},
     { name: "Reports", path: "/reports", icon: <HiDocumentReport />, },
   ];
 

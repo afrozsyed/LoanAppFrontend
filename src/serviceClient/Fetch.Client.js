@@ -5,6 +5,7 @@ const FetchClient = {
     },
 
     post: async (url, data) => {
+        console.log("========inside Post fetch client======",data);
         const response = await fetch(url, {
             method: 'POST',
             credentials: 'include',
@@ -13,6 +14,7 @@ const FetchClient = {
             },
             body: JSON.stringify(data)
         });
+        console.log("=====returning Response====",response);
         return await response.json();
     }
 }

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { CustomerForm, LoanForm, VehicleForm } from '../componentLib';
+import LoanService from "../../services/Loan.service";
+import FetchClient from "../../serviceClient/Fetch.Client";
 
 function LoanApplicationForm() {
   const [step, setStep] = useState(1);
@@ -41,9 +43,14 @@ function LoanApplicationForm() {
   };
 
   const submitForm = () => {
-    e.preventDefault();
-    // Handle form submission logic here
     console.log("Form Data Final::::",formData);
+    // Handle form submission logic here
+    const loanService = new LoanService(FetchClient);
+    (async ()=> {
+      const loanCreateResp = await loanService.createLoan(formData);
+      console.log("==loanCreateResp==>",loanCreateResp);
+    })();
+    
     alert("Form submitted successfully");
   };
 

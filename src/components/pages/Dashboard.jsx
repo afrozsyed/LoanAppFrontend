@@ -30,8 +30,8 @@ function Dashboard() {
   
       fetchLoanDetails();
     }, []);
-  const handleCardClick = () => {
-    // Handle card click event
+  const handleCardClick = (path) => {
+    navigate(path);
     console.log("Card clicked!");
   };
   return (
@@ -40,38 +40,38 @@ function Dashboard() {
         title="Total Loans"
         value={dashboardDetails.totalLoans}
         description="Total number of loans issued"
-        onClick={handleCardClick}
+        onClick={() => handleCardClick("/allLoans")}
       />
       <Card
         title="Active Loans"
         value={dashboardDetails.activeLoans}
         description="Loans currently active"
-        onClick={handleCardClick}
+        // onClick={}
       />
       <Card
         title="Closed Loans"
         value={dashboardDetails.closedLoans}
         description="Loans that have been closed"
-        onClick={handleCardClick}
+        // onClick={}
       />
       <Card
         title="Disbuted Amount"
         value={dashboardDetails.totalDisbutedAmount}
         description="Total amount disbuted"
-        onClick={handleCardClick}
+        // onClick={}
       />
       <Card
         title="Todays Collection"
         value={dashboardDetails.todaysCollection}
         description="Collection for today"
-        onClick={handleCardClick}
+        // onClick={}
       />
       <Card
         title="Over Due Loans"
         value={dashboardDetails.overDueLoans.length}
         description="Loans that are overdue"
         className="col-span-2"
-        onClick={handleCardClick}
+        // onClick={}
       />
     </div>
   );
