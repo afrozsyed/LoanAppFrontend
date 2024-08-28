@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { InputText, Select, Button } from "../componentLib";
-import { useLocation } from "react-router-dom";
+import { useLocation , useNavigate} from "react-router-dom";
+import paymentService from "../../services/Payment.service";
 
 function PaymentCollection() {
     const currentDate = new Date().toISOString().split('T')[0];
     const location = useLocation();
+    const navigate = useNavigate();
     const { accountNumber, customerName } = location.state || {};
   const {
     register,
@@ -26,7 +28,13 @@ function PaymentCollection() {
     }
   },[accountNumber,setValue]);
   
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    console.log(data);
+    const respData = await paymentService.makePayment(data);
+    console.log("++++>> resp Data in Payment collection Page::",respData);
+    navigate("/paymentRecipt", { state: { receiptDetails: respData} });
+    
+  }
   console.log(errors);
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6">

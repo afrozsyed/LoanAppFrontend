@@ -7,7 +7,7 @@ import store from './store/store.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './components/pages/Login.jsx';
 import AuthLayout from './components/AuthLayout.jsx';
-import { Emicalculator,LoanApplicationForm,LoanReport,PaymentCollection, AllLoansPage, Dashboard } from './components/componentLib.js';
+import { Emicalculator,LoanApplicationForm,LoanReport,PaymentCollection, AllLoansPage, Dashboard, PaymentReceipt } from './components/componentLib.js';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +42,10 @@ const router = createBrowserRouter([
   },{
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/paymentRecipt",
+    element: <PaymentReceipt />,
   },
   {
     path: "*",

@@ -16,6 +16,7 @@ import LoanApplicationForm from "./pages/LoanApplicationForm";
 import PaymentCollection from "./pages/PaymentCollection";
 import AllLoansPage from "./pages/AllLoansPage";
 import Dashboard from "./pages/Dashboard";
+import PaymentReceipt from "./pages/PaymentReceipt";
 
 
 export {
@@ -36,5 +37,6 @@ export {
     LoanApplicationForm,
     PaymentCollection,
     AllLoansPage,
-    Dashboard
+    Dashboard,
+    PaymentReceipt
 }
