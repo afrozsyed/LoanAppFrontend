@@ -17,6 +17,9 @@ import PaymentCollection from "./pages/PaymentCollection";
 import AllLoansPage from "./pages/AllLoansPage";
 import Dashboard from "./pages/Dashboard";
 import PaymentReceipt from "./pages/PaymentReceipt";
+import Reports from "./pages/Reports";
+import ReportPreview from "./pages/ReportPreview";
+import LoanReportPrint from "./pages/LoanReportPrint";
 
 
 export {
@@ -38,5 +41,8 @@ export {
     PaymentCollection,
     AllLoansPage,
     Dashboard,
-    PaymentReceipt
+    PaymentReceipt,
+    Reports,
+    ReportPreview,
+    LoanReportPrint
 }

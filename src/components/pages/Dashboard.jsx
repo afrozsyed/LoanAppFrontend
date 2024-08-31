@@ -30,8 +30,22 @@ function Dashboard() {
   
       fetchLoanDetails();
     }, []);
+    const paymentHeading = [
+      { header: "Account Number", accessor: "accountNumber" },
+      { header: "Customer Name", accessor: "name" },
+      { header: "Phone", accessor: "phoneNumber" },
+      { header: "Address", accessor: "address" },
+      { header: "EMI Amount", accessor: "emiAmount" },
+      { header: "Due Date", accessor: "nextPaymentDate" },
+    ];
+    const tableData = dashboardDetails.overDueLoans.map(loan=>({...loan,...loan.customer,...loan.vehicle,customer: undefined,
+      vehicle: undefined}));
+
   const handleCardClick = (path) => {
-    navigate(path);
+    
+    if(path==="/reportPreview")
+     navigate("/reportPreview", { state: { tableHeading: "Over Due Loans" , columnHeader: paymentHeading, tableData: tableData} });
+    else navigate(path);
     console.log("Card clicked!");
   };
   return (
@@ -70,8 +84,8 @@ function Dashboard() {
         title="Over Due Loans"
         value={dashboardDetails.overDueLoans.length}
         description="Loans that are overdue"
-        className="col-span-2"
-        // onClick={}
+        // className="col-span-2"
+        onClick={()=> handleCardClick("/reportPreview")}
       />
     </div>
   );

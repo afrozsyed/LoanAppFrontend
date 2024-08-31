@@ -4,16 +4,7 @@ import { useLocation } from "react-router-dom";
 function PaymentReceipt() {
     const location = useLocation();
     const { receiptDetails } = location.state || {};
-    // receiptDetails ={
-    //     AccountNumber: "35",
-    //     amountPaid: "2000",
-    //     interestComponent: 83.49,
-    //     nextPaymentDate: "1970-02-01T00:00:00.000Z",
-    //     outstandingPrincipal: 8102.67,
-    //     paymentMode: "Cash",
-    //     principalComponent: 1916.5,
-    //     remainingEMIs: 9,
-    // }
+
     const {
         AccountNumber,
         amountPaid,

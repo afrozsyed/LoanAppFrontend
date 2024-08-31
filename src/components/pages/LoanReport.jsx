@@ -120,61 +120,66 @@ function LoanReport() {
     },
   ];
 
-  // generating pdf
+  // // generating pdf
+  // const generatePDF = () => {
+  //   const input = document.getElementById("loan-report");
+  //   input.style.boxShadow = "none";
+  //   input.style.padding = "0";
+  //   input.style.margin = "0";
+  //   console.log(input);
+  //   html2canvas(input, {
+  //     scale: 1.5, // Increase scale for better quality
+  //     useCORS: true, // Enable CORS to handle external images
+  //     logging: true, // Enable logging for debugging
+  //     scrollX: 0,
+  //     scrollY: 0,
+  //     windowWidth: input.scrollWidth,
+  //     windowHeight: input.scrollHeight,
+  //   }).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("p", "mm", "a4");
+  //     // const imgProps = pdf.getImageProperties(imgData);
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     // const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width; // for potrate
+  //     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  //     // pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+  //     const imgProps = pdf.getImageProperties(imgData);
+  //     const contentWidth = pdfWidth - 20; // 10mm margins on each side
+  //     const contentHeight = (imgProps.height * contentWidth) / imgProps.width;
+
+  //     let heightLeft = canvas.height;
+  //     let position = 0;
+
+  //     // Add the image to the PDF in chunks if it exceeds one page
+  //     while (heightLeft > 0) {
+  //       pdf.addImage(
+  //         imgData,
+  //         "PNG",
+  //         10,
+  //         position + 10,
+  //         contentWidth,
+  //         contentHeight
+  //       );
+  //       heightLeft -= pdf.internal.pageSize.getHeight();
+  //       position -= pdf.internal.pageSize.getHeight();
+
+  //       // Add a new page if there's content remaining
+  //       if (heightLeft > 0) {
+  //         pdf.addPage();
+  //       }
+  //     }
+  //     // Restore the original styles after generating the PDF
+  //     input.style.boxShadow = "";
+  //     input.style.padding = "";
+  //     input.style.margin = "";
+  //     pdf.save(`Loan_Report_${loanDetails.accountNumber}.pdf`);
+  //   });
+  // };
+
+  // navigating to LoanReportPrint Page
   const generatePDF = () => {
-    const input = document.getElementById("loan-report");
-    input.style.boxShadow = "none";
-    input.style.padding = "0";
-    input.style.margin = "0";
-    console.log(input);
-    html2canvas(input, {
-      scale: 1.5, // Increase scale for better quality
-      useCORS: true, // Enable CORS to handle external images
-      logging: true, // Enable logging for debugging
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: input.scrollWidth,
-      windowHeight: input.scrollHeight,
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      // const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      // const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width; // for potrate
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      // pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-
-      const imgProps = pdf.getImageProperties(imgData);
-      const contentWidth = pdfWidth - 20; // 10mm margins on each side
-      const contentHeight = (imgProps.height * contentWidth) / imgProps.width;
-
-      let heightLeft = canvas.height;
-      let position = 0;
-
-      // Add the image to the PDF in chunks if it exceeds one page
-      while (heightLeft > 0) {
-        pdf.addImage(
-          imgData,
-          "PNG",
-          10,
-          position + 10,
-          contentWidth,
-          contentHeight
-        );
-        heightLeft -= pdf.internal.pageSize.getHeight();
-        position -= pdf.internal.pageSize.getHeight();
-
-        // Add a new page if there's content remaining
-        if (heightLeft > 0) {
-          pdf.addPage();
-        }
-      }
-      // Restore the original styles after generating the PDF
-      input.style.boxShadow = "";
-      input.style.padding = "";
-      input.style.margin = "";
-      pdf.save(`Loan_Report_${loanDetails.accountNumber}.pdf`);
-    });
+    navigate("/loanReportPrint", { state: { loanDetails, paymentDetails } });
   };
 
   // navigate to the Payment Collection Page
@@ -192,7 +197,7 @@ function LoanReport() {
       <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-3xl font-semibold mb-4">
-            Loan Details for Account Number: {accountNumber}
+            Loan Details for Account Number===: {accountNumber}
           </h2>
           <div>
             <button

@@ -7,7 +7,18 @@ import store from './store/store.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './components/pages/Login.jsx';
 import AuthLayout from './components/AuthLayout.jsx';
-import { Emicalculator,LoanApplicationForm,LoanReport,PaymentCollection, AllLoansPage, Dashboard, PaymentReceipt } from './components/componentLib.js';
+import {
+  Emicalculator,
+  LoanApplicationForm,
+  LoanReport,
+  PaymentCollection,
+  AllLoansPage,
+  Dashboard,
+  PaymentReceipt,
+  Reports,
+  ReportPreview,
+  LoanReportPrint
+} from "./components/componentLib.js";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +49,10 @@ const router = createBrowserRouter([
         path: "/allLoans",
         element: <AllLoansPage />,
       },
+      {
+        path: "/reports",
+        element: <Reports />,
+      },
     ],
   },{
     path: "/login",
@@ -46,6 +61,14 @@ const router = createBrowserRouter([
   {
     path: "/paymentRecipt",
     element: <PaymentReceipt />,
+  },
+  {
+    path: "/reportPreview",
+    element: <ReportPreview />,
+  },
+  {
+    path: "/loanReportPrint",
+    element: <LoanReportPrint />,
   },
   {
     path: "*",
