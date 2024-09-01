@@ -14,10 +14,9 @@ function LoanReportPrint() {
         <div className="print-container p-8">
           {/* Company Details */}
           <div className="company-details text-center mb-8">
-            <h1 className="text-4xl font-bold">Your Company Name</h1>
-            <p className="text-lg">Company Address Line 1</p>
-            <p className="text-lg">Company Address Line 2</p>
-            <p className="text-lg">Contact Number: +123456789</p>
+            <h1 className="text-4xl font-bold">Raghava Finance Services</h1>
+            <p className="text-lg">5-6-34, Subhash Road, Machilipatnam, Andhara Pradesh - 521001</p>
+            <p className="text-lg">Phone: 9876543210 | Email: info@company.com</p>
           </div>
     
           {/* Loan and Customer Details */}
